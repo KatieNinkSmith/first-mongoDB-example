@@ -70,4 +70,23 @@ router.get("/:id", async (req, res) => {
   }
   console.log(query);
 });
+
+// what if we want all of the grade entries for a given student?
+// GET route for a student
+//  I am adding /student to the url to differentiate between a route that
+//      returns a specific grades entry versus all of the entries for a specific student
+router.get("/student/:student_id", async (req, res) => {
+  let collection = await db.collection("grades");
+
+  // I'm using Number() because the parameter is going to be a string for the url
+  // but the id that I'm looking for is a number
+  let query = { student_id: Number(req.params.student_id) };
+  console.log(query);
+
+  // why is this an array?
+  let results = await collection.find(query).toArray();
+
+  if (!results) res.send("not found").status(404);
+  else res.send(results).status(200);
+});
 export default router;
