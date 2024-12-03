@@ -17,6 +17,22 @@ const router = express.Router();
 //                        all route
 // --------------------------------------------------
 
+// ====== post implements CREATE functionality======
+router.post("/", async (req, res) => {
+  let collection = await db.collection("grades");
+
+  // in order to use this i need to add middleware to my index.mjs
+  // we dont have a frontend, so we need to use a tool to test this
+  // the tool that we will use to test this is postman
+  // use "raw" and "json" in the body of postman to test this
+  let newDocument = req.body;
+  // this is verifying that the body is coming from postman
+  console.log(newDocument);
+
+  let result = await collection.insertOne(newDocument);
+  if (!result) res.send("not created").status(500);
+  else res.send(result).statue(201);
+});
 // =========== get implements READ funtionality
 // we want to be carefull with this get route
 // because it could be a huge amount of data
